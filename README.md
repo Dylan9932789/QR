@@ -40,9 +40,7 @@
 
     <h2>Дополнительные действия</h2>
     <button onclick="clearQRCode()">Очистить QR-код</button>
-    <button onclick="stopScan()">Остановить сканирование</button>
-    <button onclick="toggleVideo()">Переключить видео</button>
-    <button onclick="switchCamera()">Переключить камеру</button>
+  
     <button onclick="downloadQRCode()">Скачать QR-код</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
