@@ -1,7 +1,9 @@
+<<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Генератор и сканер QR-кода</title>
+    <title>QR Code Generator and Scanner</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,23 +27,22 @@
     </style>
 </head>
 <body>
-    <h1>Генератор и сканер QR-кода</h1>
+    <h1>QR Code Generator and Scanner</h1>
 
-    <h2>Создать QR-код</h2>
-    <input id="text" type="text" placeholder="Введите текст или URL">
-    <button onclick="generateQR()">Создать QR-код</button>
+    <h2>Generate QR Code</h2>
+    <input id="text" type="text" placeholder="Enter text or URL">
+    <button onclick="generateQR()">Generate QR Code</button>
     <div id="qrcode"></div>
 
-    <h2>Сканировать QR-код</h2>
+    <h2>Scan QR Code</h2>
     <video id="video" width="300" height="300" style="display: none;"></video>
     <canvas id="canvas" width="300" height="300" style="display: none;"></canvas>
-    <button onclick="startScan()">Начать сканирование</button>
+    <button onclick="startScan()">Start Scanning</button>
     <div id="result"></div>
 
-    <h2>Дополнительные действия</h2>
-    <button onclick="clearQRCode()">Очистить QR-код</button>
-  
-    <button onclick="downloadQRCode()">Скачать QR-код</button>
+    <h2>Additional Actions</h2>
+    <button onclick="clearQRCode()">Clear QR Code</button>
+    <button onclick="downloadQRCode()">Download QR Code</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
     <script src="https://raw.githubusercontent.com/sitepoint-editors/jsqrcode/master/src/qr_packed.js"></script>
@@ -50,6 +51,10 @@
 
         function generateQR() {
             var text = document.getElementById('text').value;
+            if (text.trim() === "") {
+                alert("Please enter text or URL to generate QR code.");
+                return;
+            }
             var typeNumber = 4;
             var errorCorrectionLevel = 'L';
             var qr = qrcode(typeNumber, errorCorrectionLevel);
@@ -70,6 +75,10 @@
                     video.setAttribute('playsinline', true);
                     video.play();
                     requestAnimationFrame(tick);
+                })
+                .catch(function(error) {
+                    console.error('Error accessing camera:', error);
+                    alert('Could not access the camera. Please check camera permissions.');
                 });
 
             function tick() {
@@ -82,7 +91,7 @@
                         inversionAttempts: "dontInvert",
                     });
                     if (code) {
-                        resultContainer.innerHTML = 'Результат сканирования: ' + code.data;
+                        resultContainer.innerHTML = 'Scanned QR Code Data: ' + code.data;
                     }
                 }
                 requestAnimationFrame(tick);
@@ -91,32 +100,6 @@
 
         function clearQRCode() {
             document.getElementById('qrcode').innerHTML = '';
-        }
-
-        function stopScan() {
-            // Add logic to stop scanning (if needed)
-            document.getElementById('result').innerHTML = 'Сканирование остановлено.';
-        }
-
-        function toggleVideo() {
-            var video = document.getElementById('video');
-            video.style.display = (video.style.display === 'none') ? 'block' : 'none';
-        }
-
-        function switchCamera() {
-            var video = document.getElementById('video');
-            var constraints = {
-                video: { facingMode: (videoFacingMode === 'user') ? 'environment' : 'user' }
-            };
-
-            navigator.mediaDevices.getUserMedia(constraints)
-                .then(function (stream) {
-                    video.srcObject = stream;
-                    videoFacingMode = constraints.video.facingMode;
-                })
-                .catch(function (error) {
-                    console.error('Ошибка при переключении камеры:', error);
-                });
         }
 
         function downloadQRCode() {
@@ -132,8 +115,10 @@
                 a.click();
                 document.body.removeChild(a);
             } else {
-                alert('QR-код для скачивания не создан. Сначала создайте QR-код.');
+                alert('No QR code generated to download. Please generate a QR code first.');
             }
         }
     </script>
- <p>&copy; 2024 Разработчик  Dylan933 Все права защищены. | <span id="companyLink"></span></p>
+</body>
+</html>
+<p>&copy; 2024 Разработчик Dylan933 Все права защищены. | <span id="companyLink"></span></p> \\
