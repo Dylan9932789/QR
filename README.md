@@ -90,13 +90,16 @@
     <br>
     <label for="qrSize">Размер QR-кода:</label>
     <input id="qrSize" type="number" min="100" max="500" value="200">
+   
     <div id="qrcode"></div>
+    
     <div id="videoModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeVideoModal()">&times;</span>
             <iframe id="videoFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
+    
     <script>
         function generateVideoQR() {
             var videoLink = document.getElementById('videoLink').value;
@@ -106,6 +109,7 @@
             var qr = qrcode(0, 'M');
             qr.addData(videoLink);
             qr.make();
+            
             var qrCanvas = document.createElement('canvas');
             qrCanvas.width = qrSize;
             qrCanvas.height = qrSize;
