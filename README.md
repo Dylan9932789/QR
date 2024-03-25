@@ -2,9 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Генератор QR-кода для видео</title>
-    <script src="script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
      <style>
         body {
@@ -92,30 +90,19 @@
     <br>
     <label for="qrSize">Размер QR-кода:</label>
     <input id="qrSize" type="number" min="100" max="500" value="200">
-    
-    <label for="qrColor">Цвет QR-кода:</label>
-    <input id="qrColor" type="color" value="#000000">
-    
-    <label for="qrBgColor">Цвет фона QR-кода:</label>
-    <input id="qrBgColor" type="color" value="#FFFFFF">
-    
     <div id="qrcode"></div>
-
-   
     <div id="videoModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeVideoModal()">&times;</span>
             <iframe id="videoFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
-
     <script>
         function generateVideoQR() {
             var videoLink = document.getElementById('videoLink').value;
             var qrSize = document.getElementById('qrSize').value;
             var qrColor = document.getElementById('qrColor').value;
             var qrBgColor = document.getElementById('qrBgColor').value;
-
             var qr = qrcode(0, 'M');
             qr.addData(videoLink);
             qr.make();
@@ -191,13 +178,6 @@
         };
     </script>
 
-    <nav>
-        <ul>
-            <li><a href="#about">О нас</a></li>
-            <li><a href="#services">Услуги</a></li>
-            <li><a href="#contact">Контакты</a></li>
-        </ul>
-    </nav>
 
 
-<p>&copy; 2024 Разработчик Dylan933 Все права защищены. | <span id="companyLink"></span></p> \\
+<p>&copy; 2024 Разработчик Dylan933 Все права защищены. | <span id="companyLink"></span></p>
