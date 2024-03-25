@@ -1,124 +1,127 @@
-<<!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator and Scanner</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-        h1, h2 {
-            color: #333;
-        }
-        input, button {
-            margin: 10px;
-            padding: 5px;
-        }
-        #qrcode {
-            margin-top: 20px;
-        }
-        video, canvas {
-            display: block;
-            margin: 10px auto;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>Генератор QR-кода для видео</title>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 </head>
 <body>
-    <h1>QR Code Generator and Scanner</h1>
-
-    <h2>Generate QR Code</h2>
-    <input id="text" type="text" placeholder="Enter text or URL">
-    <button onclick="generateQR()">Generate QR Code</button>
+    <input id="videoLink" type="text" placeholder="Введите ссылку на видео">
+    <button onclick="generateVideoQR()">Создать QR-код</button>
+    <button onclick="pasteFromClipboard()">Вставить</button>
+    <button onclick="clearQRCode()">Очистить</button>
+    <button onclick="copyToClipboard()">Копировать в буфер</button>
+    <br>
+    <label for="qrSize">Размер QR-кода:</label>
+    <input id="qrSize" type="number" min="100" max="500" value="200">
+    
+    <label for="qrColor">Цвет QR-кода:</label>
+    <input id="qrColor" type="color" value="#000000">
+    
+    <label for="qrBgColor">Цвет фона QR-кода:</label>
+    <input id="qrBgColor" type="color" value="#FFFFFF">
+    
     <div id="qrcode"></div>
 
-    <h2>Scan QR Code</h2>
-    <video id="video" width="300" height="300" style="display: none;"></video>
-    <canvas id="canvas" width="300" height="300" style="display: none;"></canvas>
-    <button onclick="startScan()">Start Scanning</button>
-    <div id="result"></div>
+   
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeVideoModal()">&times;</span>
+            <iframe id="videoFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
 
-    <h2>Additional Actions</h2>
-    <button onclick="clearQRCode()">Clear QR Code</button>
-    <button onclick="downloadQRCode()">Download QR Code</button>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-    <script src="https://raw.githubusercontent.com/sitepoint-editors/jsqrcode/master/src/qr_packed.js"></script>
     <script>
-        var videoFacingMode = 'environment';
+        function generateVideoQR() {
+            var videoLink = document.getElementById('videoLink').value;
+            var qrSize = document.getElementById('qrSize').value;
+            var qrColor = document.getElementById('qrColor').value;
+            var qrBgColor = document.getElementById('qrBgColor').value;
 
-        function generateQR() {
-            var text = document.getElementById('text').value;
-            if (text.trim() === "") {
-                alert("Please enter text or URL to generate QR code.");
-                return;
-            }
-            var typeNumber = 4;
-            var errorCorrectionLevel = 'L';
-            var qr = qrcode(typeNumber, errorCorrectionLevel);
-            qr.addData(text);
+            var qr = qrcode(0, 'M');
+            qr.addData(videoLink);
             qr.make();
-            document.getElementById('qrcode').innerHTML = qr.createImgTag();
-        }
-
-        function startScan() {
-            var video = document.getElementById('video');
-            var canvas = document.getElementById('canvas');
-            var context = canvas.getContext('2d');
-            var resultContainer = document.getElementById('result');
-
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: videoFacingMode } })
-                .then(function(stream) {
-                    video.srcObject = stream;
-                    video.setAttribute('playsinline', true);
-                    video.play();
-                    requestAnimationFrame(tick);
-                })
-                .catch(function(error) {
-                    console.error('Error accessing camera:', error);
-                    alert('Could not access the camera. Please check camera permissions.');
-                });
-
-            function tick() {
-                if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                    var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                    var code = jsQR(imageData.data, imageData.width, imageData.height, {
-                        inversionAttempts: "dontInvert",
-                    });
-                    if (code) {
-                        resultContainer.innerHTML = 'Scanned QR Code Data: ' + code.data;
+            var qrCanvas = document.createElement('canvas');
+            qrCanvas.width = qrSize;
+            qrCanvas.height = qrSize;
+            var qrContext = qrCanvas.getContext('2d');
+            qrContext.fillStyle = qrBgColor;
+            qrContext.fillRect(0, 0, qrCanvas.width, qrCanvas.height);
+            qrContext.fillStyle = qrColor;
+            var moduleCount = qr.getModuleCount();
+            var moduleSize = qrSize / moduleCount;
+            for (var row = 0; row < moduleCount; row++) {
+                for (var col = 0; col < moduleCount; col++) {
+                    if (qr.isDark(row, col)) {
+                        qrContext.fillRect(col * moduleSize, row * moduleSize, moduleSize, moduleSize);
                     }
                 }
-                requestAnimationFrame(tick);
             }
+            var qrImage = document.createElement('img');
+            qrImage.src = qrCanvas.toDataURL('image/png');
+            var qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+            qrContainer.appendChild(qrImage);
         }
 
         function clearQRCode() {
+            document.getElementById('videoLink').value = '';
             document.getElementById('qrcode').innerHTML = '';
         }
 
-        function downloadQRCode() {
-            var qrcode = document.getElementById('qrcode').innerHTML;
-            if (qrcode) {
-                var blob = new Blob([qrcode], { type: 'image/svg+xml' });
-                var url = URL.createObjectURL(blob);
+        function copyToClipboard() {
+            var qrContainer = document.getElementById('qrcode');
+            var qrImage = qrContainer.querySelector('img');
+            
+            var tempInput = document.createElement('input');
+            tempInput.setAttribute('value', qrImage.src);
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
 
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = 'qrcode.svg';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } else {
-                alert('No QR code generated to download. Please generate a QR code first.');
-            }
+            alert('QR-код скопирован в буфер обмена!');
         }
+
+        function pasteFromClipboard() {
+            navigator.clipboard.readText().then(function(text) {
+                document.getElementById('videoLink').value = text;
+                openVideoModal(text);
+            });
+        }
+
+        function openVideoModal(videoLink) {
+            var modal = document.getElementById('videoModal');
+            var videoFrame = document.getElementById('videoFrame');
+            videoFrame.src = videoLink;
+            modal.style.display = 'block';
+        }
+
+        function closeVideoModal() {
+            var modal = document.getElementById('videoModal');
+            var videoFrame = document.getElementById('videoFrame');
+            videoFrame.src = '';
+            modal.style.display = 'none';
+        }
+
+        
+        window.onclick = function(event) {
+            var modal = document.getElementById('videoModal');
+            if (event.target == modal) {
+                closeVideoModal();
+            }
+        };
     </script>
-</body>
-</html>
+
+    <nav>
+        <ul>
+            <li><a href="#about">О нас</a></li>
+            <li><a href="#services">Услуги</a></li>
+            <li><a href="#contact">Контакты</a></li>
+        </ul>
+    </nav>
+
+
 <p>&copy; 2024 Разработчик Dylan933 Все права защищены. | <span id="companyLink"></span></p> \\
