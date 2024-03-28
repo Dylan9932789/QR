@@ -139,31 +139,36 @@
     </div>
 
     <script>
-        function generateVideoQR() {
-            var videoLink = document.getElementById('videoLink').value;
-            var qrSize = document.getElementById('qrSize').value;
-            var qrColor = document.getElementById('qrColor').value;
-            var qrBgColor = document.getElementById('qrBgColor').value;
-
-            var qr = qrcode(0, 'M');
-            qr.addData(videoLink);
-            qr.make();
-            var qrCanvas = document.createElement('canvas');
-            qrCanvas.width = qrSize;
-            qrCanvas.height = qrSize;
-            var qrContext = qrCanvas.getContext('2d');
-            qrContext.fillStyle = qrBgColor;
-            qrContext.fillRect(0, 0, qrCanvas.width, qrCanvas.height);
-            qrContext.fillStyle = qrColor;
-            var moduleCount = qr.getModuleCount();
-            var moduleSize = qrSize / moduleCount;
-            for (var row = 0; row < moduleCount; row++) {
-                for (var col = 0; col < moduleCount; col++) {
-                    if (qr.isDark(row, col)) {
-                        qrContext.fillRect(col * moduleSize, row * moduleSize, moduleSize, moduleSize);
-                    }
-                }
+            function generateVideoQR() {
+    var videoLink = document.getElementById('videoLink').value;
+    var qrSize = document.getElementById('qrSize').value;
+    var qr = qrcode(0, 'M');
+    qr.addData(videoLink);
+    qr.make();
+    var qrCanvas = document.createElement('canvas');
+    qrCanvas.width = qrSize;
+    qrCanvas.height = qrSize;
+    var qrContext = qrCanvas.getContext('2d');
+    var moduleCount = qr.getModuleCount();
+    var moduleSize = qrSize / moduleCount;
+    for (var row = 0; row < moduleCount; row++) {
+        for (var col = 0; col < moduleCount; col++) {
+            if (qr.isDark(row, col)) {
+                qrContext.fillStyle = "#000"; // Установка цвета для заменяющего пикселя
+            } else {
+                qrContext.fillStyle = "#fff"; // Установка цвета для фона
             }
+            qrContext.fillRect(col * moduleSize, row * moduleSize, moduleSize, moduleSize);
+        }
+    }
+    var qrImage = document.createElement('img');
+    qrImage.src = qrCanvas.toDataURL('image/png');
+    var qrContainer = document.getElementById('qrcode');
+    qrContainer.innerHTML = '';
+    qrContainer.appendChild(qrImage);
+}
+
+             }
             var qrImage = document.createElement('img');
             qrImage.src = qrCanvas.toDataURL('image/png');
             var qrContainer = document.getElementById('qrcode');
