@@ -1,4 +1,3 @@
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,7 +70,18 @@
             color: #fff;
             padding: 10px;
             text-align: center;
-        }
+        } 
+             .qrSizeLabel {
+    display: block;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold; /* Жирный шрифт */
+    margin-bottom: 5px; /* Отступ снизу */
+}
+
+
+
         code {
             font-family: 'Courier New', Courier, monospace;
             font-size: 14px;
@@ -115,6 +125,8 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+
     </style>
 </head>
 <body>
@@ -127,6 +139,7 @@
     <label for="qrSize">Размер QR-кода:</label>
     <input id="qrSize" type="number" min="100" max="500" value="200">
     
+    <input type="file" id="fileInput">
     <div id="qrcode"></div>
 
     <div id="videoModal" class="modal">
@@ -219,6 +232,35 @@
                 closeVideoModal();
             }
         };
+                function scanQRCode() {
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var image = new Image();
+                    image.onload = function() {
+                        var canvas = document.createElement('canvas');
+                        var context = canvas.getContext('2d');
+                        canvas.width = image.width;
+                        canvas.height = image.height;
+                        context.drawImage(image, 0, 0, image.width, image.height);
+                        try {
+                            var result = qrcode.decode();
+                            alert('Содержимое QR-кода: ' + result);
+                        } catch (error) {
+                            alert('QR-код не найден или не может быть прочитан');
+                        }
+                    };
+                    image.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Выберите изображение для сканирования');
+            }
+        }
+
+        document.getElementById('fileInput').addEventListener('change', scanQRCode);
     </script>
 
     <footer>
