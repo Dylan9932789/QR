@@ -120,7 +120,7 @@
 <body>
     <input id="videoLink" type="text" placeholder="Введите ссылку на видео">
     <button onclick="generateVideoQR()">Создать QR-код</button>
-    <button onclick="pasteFromClipboard()">Вставить</button>
+    <button onclick="pasteFromClipboard()">Открыть</button>
     <button onclick="clearQRCode()">Очистить</button>
     <button onclick="copyToClipboard()">Копировать в буфер</button>
     <button onclick="pasteVideoLinkFromClipboard()">Вставить ссылку</button>
