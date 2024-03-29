@@ -2,9 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Генератор QR-кода для видео</title>
-    <script src="script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
     <style>
         body {
@@ -139,36 +137,28 @@
     </div>
 
     <script>
-            function generateVideoQR() {
-    var videoLink = document.getElementById('videoLink').value;
-    var qrSize = document.getElementById('qrSize').value;
-    var qr = qrcode(0, 'M');
-    qr.addData(videoLink);
-    qr.make();
-    var qrCanvas = document.createElement('canvas');
-    qrCanvas.width = qrSize;
-    qrCanvas.height = qrSize;
-    var qrContext = qrCanvas.getContext('2d');
-    var moduleCount = qr.getModuleCount();
-    var moduleSize = qrSize / moduleCount;
-    for (var row = 0; row < moduleCount; row++) {
-        for (var col = 0; col < moduleCount; col++) {
-            if (qr.isDark(row, col)) {
-                qrContext.fillStyle = "#000"; // Установка цвета для заменяющего пикселя
-            } else {
-                qrContext.fillStyle = "#fff"; // Установка цвета для фона
+        function generateVideoQR() {
+            var videoLink = document.getElementById('videoLink').value;
+            var qrSize = document.getElementById('qrSize').value;
+            var qr = qrcode(0, 'M');
+            qr.addData(videoLink);
+            qr.make();
+            var qrCanvas = document.createElement('canvas');
+            qrCanvas.width = qrSize;
+            qrCanvas.height = qrSize;
+            var qrContext = qrCanvas.getContext('2d');
+            var moduleCount = qr.getModuleCount();
+            var moduleSize = qrSize / moduleCount;
+            for (var row = 0; row < moduleCount; row++) {
+                for (var col = 0; col < moduleCount; col++) {
+                    if (qr.isDark(row, col)) {
+                        qrContext.fillStyle = "#000"; // Установка цвета для заменяющего пикселя
+                    } else {
+                        qrContext.fillStyle = "#fff"; // Установка цвета для фона
+                    }
+                    qrContext.fillRect(col * moduleSize, row * moduleSize, moduleSize, moduleSize);
+                }
             }
-            qrContext.fillRect(col * moduleSize, row * moduleSize, moduleSize, moduleSize);
-        }
-    }
-    var qrImage = document.createElement('img');
-    qrImage.src = qrCanvas.toDataURL('image/png');
-    var qrContainer = document.getElementById('qrcode');
-    qrContainer.innerHTML = '';
-    qrContainer.appendChild(qrImage);
-}
-
-             }
             var qrImage = document.createElement('img');
             qrImage.src = qrCanvas.toDataURL('image/png');
             var qrContainer = document.getElementById('qrcode');
