@@ -1,10 +1,10 @@
-head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Генератор QR-кода для видео</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqrcode/0.6.2/jsqrcode-combined.min.js"></script>
-    <style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqrcode/0.6.2/jsqrcode-combined.min.js"></script>
+   <style>
     body {
         font-family: Arial, sans-serif;
         background-color: #f0f0f0;
@@ -102,6 +102,7 @@ head>
         margin: 0;
     }
 </style>
+
 
 </head>
 <body>
