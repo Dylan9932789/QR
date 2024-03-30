@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -266,7 +265,6 @@
         }
     </script>
     <footer>
-        <p>&copy; 2024 Разработчик Dylan933. Все права защищены. г.Вяземский| </p>
-    </footer>
+        <p>&copy; 2024 Разработчик Dylan933. Все права защищены. г.Вяземский| </p>    </footer>
 </body>
 </html>
