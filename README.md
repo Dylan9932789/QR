@@ -1,4 +1,4 @@
-<head>
+head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Генератор QR-кода для видео</title>
@@ -206,11 +206,106 @@
         .chooseFileButton {
             background-color: #17a2b8; 
         }
-
+         body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        input[type="text"], input[type="file"], button {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="text"], input[type="file"] {
+            width: 300px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        label {
+            margin-left: 5px;
+        }
+        #qrcode {
+            margin-top: 20px;
+            text-align: center; /* Центрирование QR-кода */
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+        .modal-content {
+            margin: 10% auto;
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            position: relative;
+            border-radius: 10px;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        .qrSizeLabel {
+            display: block;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333;
+            font-weight: bold; 
+            margin-bottom: 5px;
+        }
+        .downloadButton {
+            background-color: #28a745; 
+        }
+        .chooseFileButton {
+            background-color: #17a2b8; 
+        }
+        /* Стили для поля перетаскивания */
+        #dropArea {
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #dropArea.hover {
+            border-color: #007bff;
+        }
+        #dropArea p {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
-    <input id="videoLink" type="text" placeholder="Введите ссылку на видео">
+    <input id="videoLink" type="text" placeholder="Введите ссылку на сайт">
     <button onclick="generateVideoQR()">Создать QR-код</button>
     <button onclick="pasteFromClipboard()">Открыть</button>
     <button onclick="clearQRCode()">Очистить</button>
@@ -221,6 +316,10 @@
     <input id="qrSize" type="number" min="100" max="500" value="200">
     
     <input type="file" id="fileInput">
+
+    <div id="dropArea" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
+        <p>Перетащите сюда изображение для сканирования QR-кода</p>
+    </div>
     <div id="qrcode"></div>
 
     <div id="videoModal" class="modal">
@@ -353,8 +452,31 @@
             document.body.removeChild(link);
         }
         document.getElementById('fileInput').addEventListener('change', scanQRCode);
+        function handleDragOver(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+        // Добавляем класс hover при наведении элемента на область
+        document.getElementById('dropArea').classList.add('hover');
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+        // Убираем класс hover после завершения операции перетаскивания
+        document.getElementById('dropArea').classList.remove('hover');
+
+        var file = event.dataTransfer.files[0];
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var image = new Image();
+            image.src = e.target.result;
+            // Отображаем изображение в элементе #qrcode
+            document.getElementById('qrcode').innerHTML = '';
+            document.getElementById('qrcode').appendChild(image);
+        };
+        reader.readAsDataURL(file);
+    }
     </script>
 
     <footer>
-        <p>&copy; 2024 Разработчик Dylan933. Все права защищены.  г.Вяземский| </p>
+                <p>&copy; 2024 Разработчик Dylan933. Все права защищены.  г.Вяземский| </p>
     </footer>
