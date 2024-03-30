@@ -125,7 +125,87 @@
         footer a:hover {
             text-decoration: underline;
         }
-
+             body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        input[type="text"], input[type="file"], button {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="text"], input[type="file"] {
+            width: 300px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        label {
+            margin-left: 5px;
+        }
+        #qrcode {
+            margin-top: 20px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+        .modal-content {
+            margin: 10% auto;
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            position: relative;
+            border-radius: 10px;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        .qrSizeLabel {
+            display: block;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333;
+            font-weight: bold; 
+            margin-bottom: 5px;
+        }
+        .downloadButton {
+            background-color: #28a745; 
+        }
+        .chooseFileButton {
+            background-color: #17a2b8; 
+        }
 
     </style>
 </head>
@@ -136,6 +216,7 @@
     <button onclick="clearQRCode()">Очистить</button>
     <button onclick="copyToClipboard()">Копировать в буфер</button>
     <button onclick="pasteVideoLinkFromClipboard()">Вставить ссылку</button>
+    <button class="downloadButton" onclick="downloadQRCode()">Скачать</button>
     <label for="qrSize">Размер QR-кода:</label>
     <input id="qrSize" type="number" min="100" max="500" value="200">
     
@@ -259,7 +340,18 @@
                 alert('Выберите изображение для сканирования');
             }
         }
-
+        function downloadQRCode() {
+            var qrContainer = document.getElementById('qrcode');
+            var qrImage = qrContainer.querySelector('img');
+            
+            // Создаем ссылку для скачивания
+            var link = document.createElement('a');
+            link.href = qrImage.src;
+            link.download = 'qrcode.png'; // Имя файла для скачивания
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
         document.getElementById('fileInput').addEventListener('change', scanQRCode);
     </script>
 
