@@ -3,306 +3,106 @@ head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Генератор QR-кода для видео</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqrcode/0.6.2/jsqrcode-combined.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-        }
-        input[type="text"], button {
-            padding: 10px;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        input[type="text"] {
-            width: 300px;
-        }
-        button {
-            background-color: #007bff;
-            color: #fff;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        label {
-            margin-left: 5px;
-        }
-        #qrcode {
-            margin-top: 20px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.8);
-        }
-        .modal-content {
-            margin: 10% auto;
-            width: 80%;
-            max-width: 600px;
-            background-color: #fff;
-            padding: 20px;
-            position: relative;
-            border-radius: 10px;
-        }
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        } 
-             .qrSizeLabel {
-    display: block;
-    margin-top: 10px;
-    font-size: 16px;
-    color: #333;
-    font-weight: bold; /* Жирный шрифт */
-    margin-bottom: 5px; /* Отступ снизу */
-}
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+    input[type="text"], input[type="file"], button {
+        padding: 10px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    input[type="text"], input[type="file"] {
+        width: 300px;
+    }
+    button {
+        background-color: #007bff;
+        color: #fff;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    label {
+        margin-left: 5px;
+    }
+    #qrcode {
+        margin-top: 20px;
+        text-align: center; /* Центрирование QR-кода */
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+        margin: 10% auto;
+        width: 80%;
+        max-width: 600px;
+        background-color: #fff;
+        padding: 20px;
+        position: relative;
+        border-radius: 10px;
+    }
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+    }
+    .qrSizeLabel {
+        display: block;
+        margin-top: 10px;
+        font-size: 16px;
+        color: #333;
+        font-weight: bold; 
+        margin-bottom: 5px;
+    }
+    .downloadButton {
+        background-color: #28a745; 
+    }
+    .chooseFileButton {
+        background-color: #17a2b8; 
+    }
+    /* Стили для поля перетаскивания */
+    #dropArea {
+        border: 2px dashed #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        margin-top: 20px;
+    }
+    #dropArea.hover {
+        border-color: #007bff;
+    }
+    #dropArea p {
+        margin: 0;
+    }
+</style>
 
-
-
-        code {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            background-color: #f4f4f4;
-            padding: 2px 5px;
-            border-radius: 4px;
-        }
-        nav ul li a {
-            color: #333;
-            text-decoration: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            background-color: #ccc;
-        }
-
-        section {
-            margin: 20px 0;
-        }
-
-        h2 {
-            color: #007bff;
-        }
-
-        p {
-            line-height: 1.6;
-        }
-
-        footer p {
-            margin: 0;
-        }
-
-        footer a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-             body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-        }
-        input[type="text"], input[type="file"], button {
-            padding: 10px;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        input[type="text"], input[type="file"] {
-            width: 300px;
-        }
-        button {
-            background-color: #007bff;
-            color: #fff;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        label {
-            margin-left: 5px;
-        }
-        #qrcode {
-            margin-top: 20px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.8);
-        }
-        .modal-content {
-            margin: 10% auto;
-            width: 80%;
-            max-width: 600px;
-            background-color: #fff;
-            padding: 20px;
-            position: relative;
-            border-radius: 10px;
-        }
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
-        .qrSizeLabel {
-            display: block;
-            margin-top: 10px;
-            font-size: 16px;
-            color: #333;
-            font-weight: bold; 
-            margin-bottom: 5px;
-        }
-        .downloadButton {
-            background-color: #28a745; 
-        }
-        .chooseFileButton {
-            background-color: #17a2b8; 
-        }
-         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-        }
-        input[type="text"], input[type="file"], button {
-            padding: 10px;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        input[type="text"], input[type="file"] {
-            width: 300px;
-        }
-        button {
-            background-color: #007bff;
-            color: #fff;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        label {
-            margin-left: 5px;
-        }
-        #qrcode {
-            margin-top: 20px;
-            text-align: center; /* Центрирование QR-кода */
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.8);
-        }
-        .modal-content {
-            margin: 10% auto;
-            width: 80%;
-            max-width: 600px;
-            background-color: #fff;
-            padding: 20px;
-            position: relative;
-            border-radius: 10px;
-        }
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
-        .qrSizeLabel {
-            display: block;
-            margin-top: 10px;
-            font-size: 16px;
-            color: #333;
-            font-weight: bold; 
-            margin-bottom: 5px;
-        }
-        .downloadButton {
-            background-color: #28a745; 
-        }
-        .chooseFileButton {
-            background-color: #17a2b8; 
-        }
-        /* Стили для поля перетаскивания */
-        #dropArea {
-            border: 2px dashed #ccc;
-            border-radius: 5px;
-            padding: 20px;
-            text-align: center;
-            margin-top: 20px;
-        }
-        #dropArea.hover {
-            border-color: #007bff;
-        }
-        #dropArea p {
-            margin: 0;
-        }
-    </style>
 </head>
 <body>
     <input id="videoLink" type="text" placeholder="Введите ссылку на сайт">
