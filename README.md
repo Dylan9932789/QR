@@ -1,4 +1,4 @@
-<head>
+ <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Генератор QR-кода для видео</title>
@@ -104,8 +104,8 @@
 </style>
 
 
-</head>
-<body>
+  </head>
+  <body>
     <input id="videoLink" type="text" placeholder="Введите ссылку на сайт">
     <button onclick="generateVideoQR()">Создать QR-код</button>
     <button onclick="pasteFromClipboard()">Открыть</button>
@@ -279,5 +279,5 @@
     </script>
 
     <footer>
-                <p>&copy; 2024 Разработчик Dylan933. Все права защищены.  г.Вяземский| </p>
+     <p>&copy; 2024 Разработчик Dylan933. Все права защищены.  г.Вяземский| </p>
     </footer>
