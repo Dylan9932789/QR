@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Генератор QR-кода для видео</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script> <!-- Добавляем библиотеку jsQR -->
+<script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -102,6 +102,21 @@
     }
     #dropArea p {
         margin: 0;
+    }
+    /* Стили для кнопки копирования считанной ссылки */
+    #copyScannedLinkButton {
+        display: block;
+        margin: 10px auto;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    #copyScannedLinkButton:hover {
+        background-color: #0056b3;
     }
 </style>
 </head>
