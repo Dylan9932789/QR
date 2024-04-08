@@ -114,6 +114,7 @@
 <button onclick="pasteVideoLinkFromClipboard()">Вставить ссылку</button>
 <button class="downloadButton" onclick="downloadQRCode()">Скачать</button>
 <label for="qrSize">Размер QR-кода:</label>
+<button onclick="copyScannedDataToClipboard()">Копировать считанную ссылку</button>
 <input id="qrSize" type="number" min="100" max="500" value="200">
 
 <input type="file" id="fileInput">
