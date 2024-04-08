@@ -131,6 +131,8 @@
 </div>
 
 <script>
+    var scannedData = ''; // Глобальная переменная для хранения считанной информации
+
     function generateVideoQR() {
         var videoLink = document.getElementById('videoLink').value;
         var qrSize = document.getElementById('qrSize').value;
@@ -228,7 +230,8 @@
                 var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
                 var code = jsQR(imageData.data, imageData.width, imageData.height);
                 if (code) {
-                    alert('Содержимое QR-кода: ' + code.data);
+                    scannedData = code.data; // Сохраняем считанную информацию
+                    alert('Содержимое QR-кода: ' + scannedData);
                 } else {
                     alert('QR-код не найден или не может быть прочитан');
                 }
@@ -236,6 +239,17 @@
             image.src = imageData;
         };
         reader.readAsDataURL(file);
+    }
+
+    function copyScannedDataToClipboard() {
+        var tempInput = document.createElement('input');
+        tempInput.setAttribute('value', scannedData);
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        alert('Скопировано в буфер обмена: ' + scannedData);
     }
 
     function handleDrop(event) {
@@ -274,5 +288,3 @@
 <footer>
     <p>&copy; 2024 Разработчик Dylan933. Все права защищены. г.Вяземский| </p>
 </footer>
-
-
