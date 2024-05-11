@@ -300,7 +300,7 @@
     });
 
 </script>
-<a href="Дилан браузер9" download>Download link</a>
+<a href="Дилан браузер9.apk" download>Скачать браузер</a>
 <footer>
     <p>&copy; 2024 Разработчик Dylan933. Все права защищены. г.Вяземский| </p>
 </footer>
