@@ -1,154 +1,129 @@
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Генератор QR-кода для видео</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        margin: 0;
-        padding: 0;
-    }
-    input[type="text"], input[type="file"], button {
-        padding: 10px;
-        margin: 5px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    input[type="text"], input[type="file"] {
-        width: 300px;
-    }
-    button {
-        background-color: #007bff;
-        color: #fff;
-    }
-    button:hover {
-        background-color: #0056b3;
-    }
-    label {
-        margin-left: 5px;
-    }
-    #qrcode {
-        margin-top: 20px;
-        text-align: center;
-    }
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.8);
-    }
-    .modal-content {
-        margin: 10% auto;
-        width: 80%;
-        max-width: 600px;
-        background-color: #fff;
-        padding: 20px;
-        position: relative;
-        border-radius: 10px;
-    }
-    .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 20px;
-        cursor: pointer;
-    }
-    footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #333;
-        color: #fff;
-        padding: 10px;
-        text-align: center;
-    }
-    .qrSizeLabel {
-        display: block;
-        margin-top: 10px;
-        font-size: 16px;
-        color: #333;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-    .downloadButton {
-        background-color: #28a745;
-    }
-    .chooseFileButton {
-        background-color: #17a2b8;
-    }
-    /* Стили для поля перетаскивания */
-    #dropArea {
-        border: 2px dashed #ccc;
-        border-radius: 5px;
-        padding: 20px;
-        text-align: center;
-        margin-top: 20px;
-        cursor: pointer; /* Добавляем курсор для указания на возможность перетаскивания */
-    }
-    #dropArea.hover {
-        border-color: #007bff;
-    }
-    #dropArea p {
-        margin: 0;
-    }
-    /* Стили для кнопки копирования считанной ссылки */
-    #copyScannedLinkButton {
-        display: block;
-        margin: 10px auto;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    #copyScannedLinkButton:hover {
-        background-color: #0056b3;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор QR-кода </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(120deg, #f0f0f0, #ffffff);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        h1 {
+            margin: 10px;
+            color: #333;
+        }
+        .qr-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .qr-code {
+            max-width: 300px;
+            width: 100%;
+            margin: 20px auto;
+        }
+        input[type="text"], input[type="number"] {
+            width: calc(100% - 20px);
+            max-width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #0078FF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056CC;
+        }
+        #dropArea {
+            border: 2px dashed #0078FF;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            width: calc(100% - 20px);
+            max-width: 300px;
+        }
+        #dropArea.hover {
+            background-color: #e6f7ff;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+        .modal-content iframe {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        .modal .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-<input id="videoLink" type="text" placeholder="Введите ссылку на сайт">
-<button onclick="generateVideoQR()">Создать QR-код</button>
-<button onclick="pasteFromClipboard()">Открыть</button>
-<button onclick="clearQRCode()">Очистить</button>
-<button onclick="copyToClipboard()">Копировать в буфер</button>
-<button onclick="pasteVideoLinkFromClipboard()">Вставить ссылку</button>
-<button class="downloadButton" onclick="downloadQRCode()">Скачать</button>
-<label for="qrSize">Размер QR-кода:</label>
-<button onclick="copyScannedDataToClipboard()">Копировать считанную ссылку</button>
-<input id="qrSize" type="number" min="100" max="500" value="200">
-
-<input type="file" id="fileInput">
-
-<div id="dropArea" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
-    <p>Перетащите сюда изображение для сканирования QR-кода</p>
-</div>
-<div id="qrcode"></div>
-
-<div id="videoModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeVideoModal()">&times;</span>
-        <iframe id="videoFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+    <h1>Генератор QR-кода </h1>
+    <input id="videoLink" type="text" placeholder="Введите ссылку ">
+    <button onclick="generateVideoQR()">Создать QR-код</button>
+    <button onclick="clearQRCode()">Очистить</button>
+    <button onclick="pasteVideoLinkFromClipboard()">Вставить ссылку</button>
+    <button class="downloadButton" onclick="downloadQRCode()">Скачать</button>
+    <label for="qrSize">Размер QR-кода:</label>
+    <input id="qrSize" type="number" min="100" max="500" value="200">
+    <div id="dropArea" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
+        <p>Перетащите сюда изображение для сканирования QR-кода</p>
     </div>
-</div>
-
-<script>
+    <div id="qrcode" class="qr-container"></div>
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeVideoModal()">&times;</span>
+            <iframe id="videoFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+        <script>
     var scannedData = ''; // Глобальная переменная для хранения считанной информации
-
     function generateVideoQR() {
         var videoLink = document.getElementById('videoLink').value;
         var qrSize = document.getElementById('qrSize').value;
@@ -177,61 +152,51 @@
         qrContainer.innerHTML = '';
         qrContainer.appendChild(qrImage);
     }
-
     function clearQRCode() {
         document.getElementById('videoLink').value = '';
         document.getElementById('qrcode').innerHTML = '';
     }
-
     function copyToClipboard() {
         var qrContainer = document.getElementById('qrcode');
         var qrImage = qrContainer.querySelector('img');
-
         var tempInput = document.createElement('input');
         tempInput.setAttribute('value', qrImage.src);
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand('copy');
         document.body.removeChild(tempInput);
-
         alert('QR-код скопирован в буфер обмена!');
     }
-
     function pasteFromClipboard() {
         navigator.clipboard.readText().then(function(text) {
             document.getElementById('videoLink').value = text;
             openVideoModal(text);
         });
     }
-
     function pasteVideoLinkFromClipboard() {
         navigator.clipboard.readText().then(function(text) {
             document.getElementById('videoLink').value = text;
             generateVideoQR();
         });
     }
-
     function openVideoModal(videoLink) {
         var modal = document.getElementById('videoModal');
         var videoFrame = document.getElementById('videoFrame');
         videoFrame.src = videoLink;
         modal.style.display = 'block';
     }
-
     function closeVideoModal() {
         var modal = document.getElementById('videoModal');
         var videoFrame = document.getElementById('videoFrame');
         videoFrame.src = '';
         modal.style.display = 'none';
     }
-
     window.onclick = function(event) {
         var modal = document.getElementById('videoModal');
         if (event.target == modal) {
             closeVideoModal();
         }
     };
-
     function scanQRCodeFromFile(file) {
         var reader = new FileReader();
         reader.onload = function(e) {
@@ -256,7 +221,6 @@
         };
         reader.readAsDataURL(file);
     }
-
     function copyScannedDataToClipboard() {
         var tempInput = document.createElement('input');
         tempInput.setAttribute('value', scannedData);
@@ -264,28 +228,22 @@
         tempInput.select();
         document.execCommand('copy');
         document.body.removeChild(tempInput);
-
         alert('Скопировано в буфер обмена: ' + scannedData);
     }
-
     function handleDrop(event) {
         event.preventDefault();
         document.getElementById('dropArea').classList.remove('hover');
-
         var file = event.dataTransfer.files[0];
         scanQRCodeFromFile(file);
     }
-
     function handleDragOver(event) {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'copy';
         document.getElementById('dropArea').classList.add('hover');
     }
-
     function downloadQRCode() {
         var qrContainer = document.getElementById('qrcode');
         var qrImage = qrContainer.querySelector('img');
-
         var link = document.createElement('a');
         link.href = qrImage.src;
         link.download = 'qrcode.png';
@@ -293,14 +251,14 @@
         link.click();
         document.body.removeChild(link);
     }
-
     document.getElementById('fileInput').addEventListener('change', function() {
         var file = this.files[0];
         scanQRCodeFromFile(file);
     });
 
 </script>
+        
+  
+</body>
+</html>
 
-<footer>
-    <p>&copy; 2024 Разработчик Dylan933. Все права защищены. г.Вяземский| </p>
-</footer>
