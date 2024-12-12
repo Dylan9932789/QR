@@ -110,6 +110,7 @@
     <button onclick="clearQRCode()">Очистить</button>
     <button onclick="pasteVideoLinkFromClipboard()">Вставить ссылку</button>
     <button class="downloadButton" onclick="downloadQRCode()">Скачать</button>
+    <button onclick="copyScannedDataToClipboard()">Копировать считанную ссылку</button>
     <label for="qrSize">Размер QR-кода:</label>
     <input id="qrSize" type="number" min="100" max="500" value="200">
     <div id="dropArea" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
